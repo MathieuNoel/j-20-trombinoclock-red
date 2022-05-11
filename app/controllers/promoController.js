@@ -1,5 +1,12 @@
-const promos = require("../../data/promos.json");
-const students = require("../../data/students.json");
+require("dotenv").config();
+
+const { Client } = require("pg");
+const client = new Client(process.env.PG_URL);
+
+client.connect();
+
+// const promos = require("../../data/promos.json");
+// const students = require("../../data/students.json");
 
 const promoController = {
   /**
@@ -7,9 +14,20 @@ const promoController = {
    * @param {request} req request object
    * @param {response} res response object
    */
+  
   getPromosList(req, res) {
+    const query = "SELECT name FROM promo ORDER BY name ASC";
+    client.query(query,(error,results) => {
+      if(error){
+        console.trace(error);
+      } else {
+        console.log(results.rows);
+        const promos = results.rows
+        res.render("promos", { promos });
+      }
+    });
     // on renvoie la liste des promos
-    res.render("promos", { promos });
+   
   },
 
   /**
