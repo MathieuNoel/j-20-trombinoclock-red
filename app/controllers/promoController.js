@@ -15,21 +15,33 @@ const promoController = {
    * @param {response} res response object
    */
   
-  getPromosList(req, res) {
-    const query = "SELECT name FROM promo ORDER BY name ASC";
-    client.query(query,(error,results) => {
-      if(error){
-        console.trace(error);
-      } else {
-        console.log(results.rows);
-        const promos = results.rows
-        res.render("promos", { promos });
-      }
-    });
-    // on renvoie la liste des promos
+  // getPromosList(req, res) {
+  //   const query = "SELECT name FROM promo ORDER BY name ASC";
+  //   client.query(query,(error,results) => {
+  //     if(error){
+  //       console.trace(error);
+  //     } else {
+  //       console.log(results.rows);
+  //       const promos = results.rows
+  //       res.render("promos", { promos });
+  //     }
+  //   });
+  //   // on renvoie la liste des promos
    
+  // },
+  getPromosList(req, res ) {
+    
+    const query = "SELECT name FROM promo ORDER BY name ASC";
+    client
+  .query(query)
+  .then(results => {
+    res.render("promos", {promos : results.rows})
+    console.log(res.rows[0]) 
+  })
+  .catch(e => console.error(e.stack))
+  
+  // res.render("promos", { promos });
   },
-
   /**
    * Display promo details page
    * @param {request} req request object 
